@@ -1,0 +1,11 @@
+{
+    "books": [{
+        "quantity": 2,
+        "author": "James",
+        "isbn": "111",
+        "available": true,
+        "title": "Java"
+    }],
+    "loans": [],
+    "users": []
+}

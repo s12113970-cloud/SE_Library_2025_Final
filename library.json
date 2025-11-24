@@ -1,0 +1,61 @@
+{
+    "books": [
+        {
+            "quantity": 9,
+            "author": "david ",
+            "isbn": "120",
+            "available": true,
+            "title": "dima101"
+        },
+        {
+            "quantity": 12,
+            "author": "soso",
+            "isbn": "22",
+            "available": true,
+            "title": "sami"
+        },
+        {
+            "quantity": 4,
+            "author": "roro",
+            "isbn": "44",
+            "available": true,
+            "title": "rula"
+        },
+        {
+            "quantity": 10,
+            "author": "samsom",
+            "isbn": "23",
+            "available": true,
+            "title": "sama"
+        },
+        {
+            "quantity": 2,
+            "author": "kusari",
+            "isbn": "20",
+            "available": true,
+            "title": "asma"
+        },
+        {
+            "quantity": 3,
+            "author": "am",
+            "isbn": "21",
+            "available": true,
+            "title": "alma"
+        }
+    ],
+    "loans": [],
+    "users": [{
+        "password": "1234",
+        "role": "admin",
+        "username": "admin"
+    },{
+      "password": "1234",
+      "role": "librarian",
+      "username": "sama"
+    },{
+      "password": "1234",
+      "role": "client",
+      "username": "david"
+    }
+    ]
+}
