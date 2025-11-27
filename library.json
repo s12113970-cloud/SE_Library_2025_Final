@@ -15,7 +15,7 @@
             "title": "sami"
         },
         {
-            "quantity": 4,
+            "quantity": 10,
             "author": "roro",
             "isbn": "44",
             "available": true,
@@ -41,21 +41,31 @@
             "isbn": "21",
             "available": true,
             "title": "alma"
+        },
+        {
+            "quantity": 3,
+            "author": "asmaa",
+            "isbn": "3211",
+            "available": true,
+            "title": "asmaa"
         }
     ],
     "loans": [],
-    "users": [{
-        "password": "1234",
-        "role": "admin",
-        "username": "admin"
-    },{
-      "password": "1234",
-      "role": "librarian",
-      "username": "sama"
-    },{
-      "password": "1234",
-      "role": "client",
-      "username": "david"
-    }
+    "users": [
+        {
+            "password": "1234",
+            "role": "admin",
+            "username": "admin"
+        },
+        {
+            "password": "1234",
+            "role": "librarian",
+            "username": "sama"
+        },
+        {
+            "password": "1234",
+            "role": "client",
+            "username": "david"
+        }
     ]
 }
