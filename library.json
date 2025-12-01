@@ -2,52 +2,104 @@
     "books": [
         {
             "quantity": 9,
-            "author": "david ",
+            "fine": 0,
+            "author": "david",
             "isbn": "120",
+            "borrowedBy": null,
+            "dueDate": null,
             "available": true,
-            "title": "dima101"
+            "title": "dima101",
+            "borrowed": false
         },
         {
-            "quantity": 12,
+            "quantity": 11,
+            "fine": 0,
             "author": "soso",
             "isbn": "22",
+            "borrowedBy": 3,
+            "dueDate": "2025-01-05",
             "available": true,
-            "title": "sami"
+            "title": "sami",
+            "borrowed": true
         },
         {
             "quantity": 10,
+            "fine": 0,
             "author": "roro",
             "isbn": "44",
+            "borrowedBy": null,
+            "dueDate": null,
             "available": true,
-            "title": "rula"
+            "title": "rula",
+            "borrowed": false
         },
         {
-            "quantity": 10,
+            "quantity": 9,
+            "fine": 0,
             "author": "samsom",
             "isbn": "23",
+            "borrowedBy": null,
+            "dueDate": null,
             "available": true,
-            "title": "sama"
+            "title": "sama",
+            "borrowed": false
+        },
+        {
+            "quantity": 1,
+            "fine": 0,
+            "author": "kusari",
+            "isbn": "20",
+            "borrowedBy": null,
+            "dueDate": null,
+            "available": true,
+            "title": "asma",
+            "borrowed": false
         },
         {
             "quantity": 2,
-            "author": "kusari",
-            "isbn": "20",
-            "available": true,
-            "title": "asma"
-        },
-        {
-            "quantity": 3,
+            "fine": 0,
             "author": "am",
             "isbn": "21",
+            "borrowedBy": null,
+            "dueDate": null,
             "available": true,
-            "title": "alma"
+            "title": "alma",
+            "borrowed": false
         },
         {
-            "quantity": 3,
+            "quantity": 2,
+            "fine": 0,
             "author": "asmaa",
             "isbn": "3211",
+            "borrowedBy": null,
+            "dueDate": null,
             "available": true,
-            "title": "asmaa"
+            "title": "asmaa",
+            "borrowed": false
+        }
+    ],
+    "cds": [
+        {
+            "quantity": 1,
+            "artist": "Mozart",
+            "fine": 0,
+            "borrowedBy": 3,
+            "dueDate": "2024-12-01",
+            "available": true,
+            "id": "CD-1",
+            "title": "Best of Mozart",
+            "borrowed": true
+        },
+        {
+            "quantity": 0,
+            "artist": "Various Artists",
+            "fine": 0,
+            "borrowedBy": 3,
+            "dueDate": "2025-12-15",
+            "available": false,
+            "id": "CD-2",
+            "title": "Hits 2025",
+            "borrowed": true
         }
     ],
     "loans": [],
@@ -65,7 +117,14 @@
         {
             "password": "1234",
             "role": "client",
+            "id": 3,
             "username": "david"
+        },
+        {
+            "password": "1234",
+            "role": "client",
+            "id": 1,
+            "username": "unactive"
         }
     ]
 }
