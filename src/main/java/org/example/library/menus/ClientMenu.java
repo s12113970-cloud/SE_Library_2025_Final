@@ -17,7 +17,9 @@ public class ClientMenu {
             System.out.println("\n===== Client Menu =====");
             System.out.println("1) Search Book");
             System.out.println("2) Show All Books");
-            System.out.println("3) Logout");
+            System.out.println("3) Borrow Book");      // NEW
+            System.out.println("4) Pay Fine");         // NEW
+            System.out.println("5) Logout");
 
             int choice = Input.number("Choose: ");
 
@@ -25,7 +27,9 @@ public class ClientMenu {
 
                 case 1 -> searchBook();
                 case 2 -> showAllBooks();
-                case 3 -> {
+                case 3 -> borrowBook();     // NEW
+                case 4 -> payFine();        // NEW
+                case 5 -> {
                     System.out.println("Logged out.");
                     return;
                 }
@@ -61,6 +65,23 @@ public class ClientMenu {
             }
             default -> System.out.println("Invalid choice!");
         }
+    }
+
+    // ============================
+    //      BORROW BOOK (NEW)
+    // ============================
+    private static void borrowBook() {
+        String isbn = Input.text("Enter ISBN to borrow: ");
+        bookService.borrowBook(isbn);
+    }
+
+    // ============================
+    //      PAY FINE (NEW)
+    // ============================
+    private static void payFine() {
+        String isbn = Input.text("Enter ISBN: ");
+        double amount = Input.number("Enter amount to pay: ");
+        bookService.payFine(isbn, amount);
     }
 
     // ============================

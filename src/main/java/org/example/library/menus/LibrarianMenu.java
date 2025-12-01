@@ -21,7 +21,8 @@ public class LibrarianMenu {
             System.out.println("1) Add Book");
             System.out.println("2) Search Book");
             System.out.println("3) Show All Books");
-            System.out.println("4) Logout");
+            System.out.println("4) Check Overdue Books");   // NEW
+            System.out.println("5) Logout");
 
             int choice = Input.number("Choose: ");
 
@@ -29,14 +30,15 @@ public class LibrarianMenu {
                 case 1 -> addBook(currentUser);
                 case 2 -> searchBook();
                 case 3 -> showAllBooks();
-                case 4 -> { return; }
+                case 4 -> checkOverdue();   // NEW
+                case 5 -> { return; }
                 default -> System.out.println("Invalid option!");
             }
         }
     }
 
     // ============================
-    //       ADD BOOK (MOVING FROM MAIN)
+    //       ADD BOOK
     // ============================
     protected static void addBook(User currentUser) {
 
@@ -63,72 +65,65 @@ public class LibrarianMenu {
             int option = Input.number("Choose: ");
 
             if (option == 1) {
-                // Load complete DB
                 JSONObject db = FileDatabase.load();
                 JSONArray books = db.getJSONArray("books");
 
-                JSONObject target = null;
                 for (int i = 0; i < books.length(); i++) {
                     JSONObject obj = books.getJSONObject(i);
                     if (obj.getString("isbn").equals(isbn)) {
-                        target = obj;
+
+                        int addQty = Input.number("Enter quantity to add: ");
+                        int newQty = obj.getInt("quantity") + addQty;
+
+                        obj.put("quantity", newQty);
+                        FileDatabase.save(db);
+
+                        System.out.println("✔ Quantity updated to: " + newQty);
                         break;
                     }
                 }
-
-                if (target != null) {
-                    int addQty = Input.number("Enter quantity to add: ");
-                    int newQty = target.getInt("quantity") + addQty;
-
-                    target.put("quantity", newQty);
-                    FileDatabase.save(db);
-
-                    System.out.println("✔ Quantity updated to: " + newQty);
-                }
                 return;
-            }
-            else if (option == 2) {
+
+            } else if (option == 2) {
 
                 String newIsbn;
                 while (true) {
                     newIsbn = Input.text("Enter new ISBN: ");
 
-                    if (bookService.findBookByISBN(newIsbn) == null) {
-                        break;
-                    }
-                    System.out.println("❌ ISBN already exists! Please enter a different one.");
+                    if (bookService.findBookByISBN(newIsbn) == null) break;
+
+                    System.out.println("❌ ISBN already exists! Please enter another.");
                 }
 
                 String title = Input.text("Enter title: ");
                 String author = Input.text("Enter author: ");
                 int qty = Input.number("Enter quantity: ");
 
-                Book newBook = new Book(title, author, newIsbn, qty);
+                Book newBook = new Book(title, author, newIsbn, qty, qty > 0);
                 bookService.addBook(newBook);
 
                 System.out.println("✔ New edition added successfully!");
                 return;
-            }
-            else {
+
+            } else {
                 System.out.println("Cancelled.");
                 return;
             }
         }
 
-        // Add new book
+        // Completely new book
         String title = Input.text("Enter title: ");
         String author = Input.text("Enter author: ");
         int qty = Input.number("Enter quantity: ");
+        Book newBook = new Book(title, author, isbn, qty, qty > 0);
+        bookService.addBook(newBook);
 
-        Book b = new Book(title, author, isbn, qty);
-        bookService.addBook(b);
 
         System.out.println("✔ Book added successfully!");
     }
 
-
     // ============================
-    //         SEARCH BOOK
+    //        SEARCH BOOK
     // ============================
     protected static void searchBook() {
         System.out.println("\nSearch by:");
@@ -155,6 +150,14 @@ public class LibrarianMenu {
         }
     }
 
+    // ============================
+    //     CHECK OVERDUE (NEW)
+    // ============================
+    private static void checkOverdue() {
+        System.out.println("\nRunning overdue detection...");
+        bookService.checkOverdueBooks();
+        System.out.println("✔ Overdue check completed. Fines updated!");
+    }
 
     // ============================
     //      PRINT SEARCH RESULTS
@@ -168,13 +171,12 @@ public class LibrarianMenu {
 
         for (Book b : results) {
             System.out.println("- " + b.getTitle() + " | " + b.getAuthor() +
-                    " | ISBN:" + b.getIsbn() + " | Qty: " + b.getQuantity());
+                    " | ISBN: " + b.getIsbn() + " | Qty: " + b.getQuantity());
         }
     }
 
-
     // ============================
-    //        SHOW ALL BOOKS
+    //       SHOW ALL BOOKS
     // ============================
     protected static void showAllBooks() {
         List<Book> results = bookService.getAllBooks();
@@ -187,7 +189,7 @@ public class LibrarianMenu {
 
         for (Book b : results) {
             System.out.println("- " + b.getTitle() + " | " + b.getAuthor() +
-                    " | ISBN:" + b.getIsbn() + " | Qty:" + b.getQuantity());
+                    " | ISBN: " + b.getIsbn() + " | Qty: " + b.getQuantity());
         }
     }
 }
