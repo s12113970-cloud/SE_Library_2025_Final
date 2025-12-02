@@ -21,7 +21,7 @@
             "borrowed": false
         },
         {
-            "quantity": 10,
+            "quantity": 12,
             "fine": 0,
             "author": "roro",
             "isbn": "44",
@@ -42,7 +42,7 @@
         },
         {
             "quantity": 1,
-            "fine": 153,
+            "fine": 0.5,
             "author": "kusari",
             "isbn": "20",
             "dueDate": "2025-01-28",
@@ -68,6 +68,26 @@
             "dueDate": null,
             "available": true,
             "title": "asmaa",
+            "borrowed": false
+        },
+        {
+            "quantity": 9,
+            "fine": 0,
+            "author": "dodo",
+            "isbn": "90",
+            "dueDate": null,
+            "available": true,
+            "title": "madi",
+            "borrowed": false
+        },
+        {
+            "quantity": 3,
+            "fine": 0,
+            "author": "dd",
+            "isbn": "3",
+            "dueDate": null,
+            "available": true,
+            "title": "ss",
             "borrowed": false
         }
     ],
