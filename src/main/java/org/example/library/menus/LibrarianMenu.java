@@ -22,22 +22,22 @@ public class LibrarianMenu {
         while (true) {
             System.out.println("\n===== Librarian Menu =====");
             System.out.println("1) Add Book");
-            System.out.println("2) Add CD");               // ⭐ NEW
+            System.out.println("2) Add CD");
             System.out.println("3) Search Book");
             System.out.println("4) Show All Books");
-            System.out.println("5) Show All CDs");         // ⭐ NEW
-            System.out.println("6) Check Overdue Media");  // ⭐ NEW (Books + CDs)
+            System.out.println("5) Show All CDs");
+            System.out.println("6) Check Overdue Media (Books + CDs)");
             System.out.println("7) Logout");
 
             int choice = Input.number("Choose: ");
 
             switch (choice) {
                 case 1 -> addBook(currentUser);
-                case 2 -> addCD(currentUser);        // ⭐ NEW
+                case 2 -> addCD(currentUser);
                 case 3 -> searchBook();
                 case 4 -> showAllBooks();
-                case 5 -> showAllCDs();              // ⭐ NEW
-                case 6 -> checkOverdueMedia();       // ⭐ NEW
+                case 5 -> showAllCDs();
+                case 6 -> checkOverdueMedia();
                 case 7 -> { return; }
                 default -> System.out.println("Invalid option!");
             }
@@ -48,13 +48,14 @@ public class LibrarianMenu {
     //       ADD BOOK
     // ============================
     protected static void addBook(User currentUser) {
-        if (!currentUser.isAdmin() && !currentUser.getRole().equalsIgnoreCase("librarian")) {
+
+        if (!currentUser.isAdmin() &&
+                !currentUser.getRole().equalsIgnoreCase("librarian")) {
             System.out.println("❌ Only admin or librarian can add books!");
             return;
         }
 
         String isbn = Input.text("Enter ISBN: ");
-
         JSONObject existingBook = bookService.findBookByISBN(isbn);
 
         if (existingBook != null) {
@@ -76,29 +77,26 @@ public class LibrarianMenu {
 
                 for (int i = 0; i < books.length(); i++) {
                     JSONObject obj = books.getJSONObject(i);
-                    if (obj.getString("isbn").equals(isbn)) {
 
+                    if (obj.getString("isbn").equals(isbn)) {
                         int addQty = Input.number("Enter quantity to add: ");
                         int newQty = obj.getInt("quantity") + addQty;
 
                         obj.put("quantity", newQty);
                         FileDatabase.save(db);
-
                         System.out.println("✔ Quantity updated to: " + newQty);
-                        break;
+                        return;
                     }
                 }
-                return;
+            }
 
-            } else if (option == 2) {
-
+            else if (option == 2) {
                 String newIsbn;
                 while (true) {
                     newIsbn = Input.text("Enter new ISBN: ");
-
                     if (bookService.findBookByISBN(newIsbn) == null) break;
 
-                    System.out.println("❌ ISBN already exists! Please enter another.");
+                    System.out.println("❌ ISBN already exists! Try another.");
                 }
 
                 String title = Input.text("Enter title: ");
@@ -108,19 +106,17 @@ public class LibrarianMenu {
                 Book newBook = new Book(title, author, newIsbn, qty, qty > 0);
                 bookService.addBook(newBook);
 
-                System.out.println("✔ New edition added successfully!");
-                return;
-
-            } else {
-                System.out.println("Cancelled.");
-                return;
+                System.out.println("✔ New edition added!");
             }
+
+            return;
         }
 
-        // Completely new book
+        // brand new book
         String title = Input.text("Enter title: ");
         String author = Input.text("Enter author: ");
         int qty = Input.number("Enter quantity: ");
+
         Book newBook = new Book(title, author, isbn, qty, qty > 0);
         bookService.addBook(newBook);
 
@@ -128,11 +124,12 @@ public class LibrarianMenu {
     }
 
     // ============================
-    //       ADD CD  (NEW)
+    //       ADD CD
     // ============================
     private static void addCD(User currentUser) {
 
-        if (!currentUser.isAdmin() && !currentUser.getRole().equalsIgnoreCase("librarian")) {
+        if (!currentUser.isAdmin() &&
+                !currentUser.getRole().equalsIgnoreCase("librarian")) {
             System.out.println("❌ Only admin or librarian can add CDs!");
             return;
         }
@@ -143,7 +140,6 @@ public class LibrarianMenu {
         int qty = Input.number("Enter quantity: ");
 
         CD cd = new CD(id, title, artist, qty, qty > 0);
-
         cdService.addCD(cd);
 
         System.out.println("✔ CD added successfully!");
@@ -178,7 +174,7 @@ public class LibrarianMenu {
     }
 
     // ============================
-    //     SHOW ALL CDs  (NEW)
+    //      SHOW ALL CDs
     // ============================
     private static void showAllCDs() {
         List<CD> cds = cdService.getAllCDs();
@@ -196,7 +192,7 @@ public class LibrarianMenu {
     }
 
     // ============================
-    //     SHOW ALL BOOKS
+    //      SHOW ALL BOOKS
     // ============================
     protected static void showAllBooks() {
         List<Book> results = bookService.getAllBooks();
@@ -214,7 +210,7 @@ public class LibrarianMenu {
     }
 
     // ============================
-    //     CHECK OVERDUE (Books + CDs)
+    //  CHECK OVERDUE (BOOKS + CDs)
     // ============================
     private static void checkOverdueMedia() {
         System.out.println("\nRunning overdue detection...");
@@ -230,6 +226,7 @@ public class LibrarianMenu {
     // ============================
     protected static void printSearchResults(List<Book> results) {
         System.out.println("\n===== Search Results =====");
+
         if (results.isEmpty()) {
             System.out.println("No books found.");
             return;
