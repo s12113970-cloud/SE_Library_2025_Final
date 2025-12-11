@@ -5,11 +5,25 @@ import org.example.library.storage.FileDatabase;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Service class that provides administrative operations such as logging in
+ * and unregistering users from the library system.
+ *
+ * <p>This class interacts with the {@link FileDatabase} to read and update
+ * stored user and book data.</p>
+ */
+
 public class AdminService {
 
-    // ===========================================
-    //                  LOGIN
-    // ===========================================
+    /**
+     * Attempts to authenticate a user using a username and password.
+     *
+     * @param username the username entered by the user
+     * @param password the password entered by the user
+     * @return a {@link User} object if login is successful,
+     *         or {@code null} if the credentials are invalid
+     */
+
     public User login(String username, String password) {
 
         JSONObject db = FileDatabase.load();
@@ -38,12 +52,19 @@ public class AdminService {
     }
 
 
-    // ===========================================
-    //           UNREGISTER USER  (Sprint 4)
-    // ===========================================
+    /**
+     * Removes a user from the system if the requester is an admin and
+     * the target user has no active loans or unpaid fines.
+     *
+     * @param usernameToRemove username of the user to be removed
+     * @param currentUser      the logged-in user performing the operation
+     * @return {@code true} if removal succeeded,
+     *         {@code false} if the user cannot be removed
+     */
+
     public boolean unregisterUser(String usernameToRemove, User currentUser) {
 
-        // 1) Only admins allowed
+        // Only admins may remove users
         if (!currentUser.isAdmin()) {
             System.out.println("❌ Only administrators can unregister users.");
             return false;
@@ -53,7 +74,7 @@ public class AdminService {
         JSONArray users = db.getJSONArray("users");
         JSONArray books = db.getJSONArray("books");
 
-        // 2) Find the target user + its index
+        // Search for the user to remove
         JSONObject targetUser = null;
         Integer targetId = null;
         int removeIndex = -1;
@@ -77,13 +98,13 @@ public class AdminService {
             return false;
         }
 
-        // Admin cannot be deleted
+        // Admin accounts cannot be deleted
         if (targetUser.getString("role").equals("admin")) {
             System.out.println("❌ You cannot unregister an admin account.");
             return false;
         }
 
-        // 3) Check if this specific user has active loans or fines
+        // Check for active loans or unpaid fines
         if (targetId != null) {
             for (int i = 0; i < books.length(); i++) {
                 JSONObject b = books.getJSONObject(i);
@@ -108,7 +129,7 @@ public class AdminService {
             }
         }
 
-        // 4) Remove using INDEX (correct way)
+        // Remove user
         users.remove(removeIndex);
         FileDatabase.save(db);
 

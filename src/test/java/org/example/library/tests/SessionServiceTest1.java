@@ -4,7 +4,7 @@ import org.example.library.services.SessionService;
 import org.example.library.storage.FileDatabase;
 import org.junit.jupiter.api.*;
 
-class SessionServiceTest {
+class SessionServiceTest1 {
 
     @BeforeAll
     static void useTestDB() {

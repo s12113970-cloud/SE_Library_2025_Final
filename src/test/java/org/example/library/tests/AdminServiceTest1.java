@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 
-class AdminServiceTest {
+class AdminServiceTest1 {
 
     @BeforeAll
     static void useTestDB() {

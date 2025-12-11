@@ -14,11 +14,23 @@ import org.example.library.strategies.FineStrategy;
 import org.example.library.strategies.BookFineStrategy;
 import org.example.library.observers.Observer;
 
+/**
+ * Service class responsible for handling all operations related to books:
+ * searching, borrowing, fines, overdue detection, reminders, and observer notifications.
+ *
+ * <p>This class communicates directly with the {@link FileDatabase} to read
+ * and update book information.</p>
+ */
 
 public class BookService {
 
 
-
+    /**
+     * Finds a book in the database by its ISBN.
+     *
+     * @param isbn the ISBN code of the desired book
+     * @return a {@link JSONObject} containing the book data or {@code null} if not found
+     */
 
     public JSONObject findBookByISBN(String isbn) {
         JSONObject db = FileDatabase.load();
@@ -34,22 +46,50 @@ public class BookService {
     }
 
     // ================= OBSERVER PATTERN ==================
+    /** List of observers that should be notified about overdue reminders. */
 
     private List<Observer> observers = new ArrayList<>();
+
+    /**
+     * Registers an observer that will receive notifications.
+     *
+     * @param observer the observer to register
+     */
 
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * Removes an existing observer from the notification list.
+     *
+     * @param observer the observer to remove
+     */
+
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
+
+
+    /**
+     * Notifies all observers about a reminder message.
+     *
+     * @param user    the user the message concerns
+     * @param message the notification content
+     */
 
     private void notifyObservers(User user, String message) {
         for (Observer obs : observers) {
             obs.notify(user, message);
         }
     }
+
+
+    /**
+     * Adds a new book to the database.
+     *
+     * @param book the {@link Book} object to register
+     */
 
     public void addBook(Book book) {
         JSONObject db = FileDatabase.load();
@@ -68,6 +108,13 @@ public class BookService {
 
     // ===== Search Functions =====
 
+    /**
+     * Searches for a book by ISBN and returns a list of matching results.
+     *
+     * @param isbn the ISBN value to search for
+     * @return list of matching {@link Book} objects
+     */
+
     public List<Book> searchByISBN(String isbn) {
         List<Book> results = new ArrayList<>();
         JSONObject b = findBookByISBN(isbn);
@@ -82,6 +129,14 @@ public class BookService {
         }
         return results;
     }
+
+
+    /**
+     * Searches for books that contain the specified title.
+     *
+     * @param title the title substring to search for
+     * @return list of matching books
+     */
 
     public List<Book> searchByTitle(String title) {
         JSONObject db = FileDatabase.load();
@@ -103,6 +158,14 @@ public class BookService {
         return results;
     }
 
+
+    /**
+     * Searches for books written by a specific author.
+     *
+     * @param author the author name or substring
+     * @return list of matching books
+     */
+
     public List<Book> searchByAuthor(String author) {
         JSONObject db = FileDatabase.load();
         JSONArray books = db.getJSONArray("books");
@@ -123,6 +186,13 @@ public class BookService {
         return results;
     }
 
+
+    /**
+     * Returns all books stored in the database.
+     *
+     * @return list of all books
+     */
+
     public List<Book> getAllBooks() {
         JSONObject db = FileDatabase.load();
         JSONArray books = db.getJSONArray("books");
@@ -140,6 +210,12 @@ public class BookService {
         }
         return results;
     }
+
+
+    /**
+     * Checks all borrowed books and applies fines using the {@link FineStrategy}.
+     * If a book is overdue, a fine is calculated based on days late.
+     */
 
     public void checkOverdueBooks() {
         JSONObject db = FileDatabase.load();
@@ -176,9 +252,13 @@ public class BookService {
 
 
 
-    // ===================================================
-//               BORROW BOOK (Sprint 3)
-// ===================================================
+    /**
+     * Allows a user to borrow a book if available.
+     *
+     * @param isbn        the ISBN of the book to borrow
+     * @param currentUser the user borrowing the book
+     */
+
     public void borrowBook(String isbn, User currentUser) {
 
         JSONObject db = FileDatabase.load();
@@ -222,9 +302,13 @@ public class BookService {
     }
 
 
-    // ===================================================
-//                   PAY FINE
-// ===================================================
+    /**
+     * Allows a user to pay part or all of their book fine.
+     *
+     * @param isbn   the ISBN of the book
+     * @param amount the payment amount
+     */
+
     public void payFine(String isbn, double amount) {
 
         JSONObject db = FileDatabase.load();
@@ -259,9 +343,14 @@ public class BookService {
     }
 
 
-    // ===================================================
-//            GET TOTAL FINE FOR A USER
-// ===================================================
+    /**
+     * Calculates the total accumulated fine for all books borrowed by a specific user.
+     *
+     * @param userId the user's ID
+     * @return total fine amount
+     */
+
+
     public double getTotalBookFineForUser(int userId) {
 
         JSONObject db = FileDatabase.load();
@@ -280,6 +369,13 @@ public class BookService {
         return total;
     }
 
+
+    /**
+     * Retrieves all overdue books for a specific user.
+     *
+     * @param userId the user's ID
+     * @return list of overdue books as {@link JSONObject}
+     */
 
     public List<JSONObject> getOverdueBooksForUser(int userId) {
 
@@ -317,6 +413,13 @@ public class BookService {
     }
 
 
+    /**
+     * Sends an overdue reminder to a specific user.
+     * If the user has no overdue books, no notification is triggered.
+     *
+     * @param user the user to notify
+     */
+
     public void sendReminder(User user) {
 
         List<JSONObject> overdue = getOverdueBooksForUser(user.getId());
@@ -336,7 +439,13 @@ public class BookService {
         System.out.println("📧 Reminder notification triggered for " + user.getUsername());
     }
 
-
+    /**
+     * Sends reminders (real emails) to all users who have overdue books.
+     *
+     * @param users        list of users to check
+     * @param emailService service used to send the email
+     * @return total number of reminders sent
+     */
 
 
     public int sendRemindersToAllUsers(List<User> users, EmailService1 emailService) {

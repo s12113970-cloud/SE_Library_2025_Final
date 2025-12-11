@@ -1,0 +1,138 @@
+books:
+  - quantity: 8
+    fine: 0
+    author: "david"
+    isbn: "120"
+    borrowedBy: 3
+    dueDate: "2025-1-24"
+    available: true
+    title: "dima101"
+    borrowed: true
+
+  - quantity: 11
+    fine: 0
+    author: "soso"
+    isbn: "22"
+    borrowedBy: null
+    dueDate: null
+    available: true
+    title: "sami"
+    borrowed: false
+
+  - quantity: 10
+    fine: 0
+    author: "roro"
+    isbn: "44"
+    borrowedBy: 4
+    dueDate: "2025-1-24"
+    available: true
+    title: "rula"
+    borrowed: true
+
+  - quantity: 9
+    fine: 0
+    author: "samsom"
+    isbn: "23"
+    borrowedBy: null
+    dueDate: null
+    available: true
+    title: "sama"
+    borrowed: false
+
+  - quantity: 1
+    fine: 0
+    author: "kusari"
+    isbn: "20"
+    borrowedBy: null
+    dueDate: null
+    available: true
+    title: "asma"
+    borrowed: false
+
+  - quantity: 2
+    fine: 0
+    author: "am"
+    isbn: "21"
+    borrowedBy: null
+    dueDate: null
+    available: true
+    title: "alma"
+    borrowed: false
+
+  - quantity: 2
+    fine: 0
+    author: "asmaa"
+    isbn: "3211"
+    borrowedBy: null
+    dueDate: null
+    available: true
+    title: "asmaa"
+    borrowed: false
+
+  - quantity: 1
+    fine: 0
+    author: "Asmaa"
+    isbn: "222"
+    dueDate: "2026-01-06"
+    borrowedBy: 3
+    available: true
+    title: "Deema book "
+    borrowed: true
+
+cds:
+  - quantity: 1
+    artist: "Mozart"
+    fine: 0
+    borrowedBy: 3
+    dueDate: null
+    available: true
+    id: "CD-1"
+    title: "Best of Mozart"
+    borrowed: false
+
+  - quantity: 0
+    artist: "Various Artists"
+    fine: 0
+    borrowedBy: 3
+    dueDate: null
+    available: false
+    id: "CD-2"
+    title: "Hits 2025"
+    borrowed: false
+
+  - quantity: 0
+    artist: "Various Artists"
+    fine: 0
+    borrowedBy: 3
+    dueDate: null
+    available: false
+    id: "CD-3"
+    title: "Hits 2025"
+    borrowed: false
+
+loans: []
+
+users:
+  - id: 1
+    username: "admin"
+    password: "1234"
+    role: "admin"
+    email: "admin@gmail.com"
+
+  - id: 2
+    username: "ahmad"
+    password: "1234"
+    role: "librarian"
+    email: "ahmad@gmail.com"
+
+  - id: 4
+    username: "asmma"
+    password: "1234"
+    role: "user"
+    email: "s12113970@stu.najah.edu"
+
+  - id: 3
+    username: "sara"
+    password: "1234"
+    role: "user"
+    email: "deemahamdan2004@gmail.com"

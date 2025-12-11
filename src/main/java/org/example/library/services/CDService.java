@@ -12,9 +12,32 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class responsible for managing CD operations in the library system.
+ * This includes:
+ * <ul>
+ *     <li>Adding new CDs to the database</li>
+ *     <li>Retrieving CDs</li>
+ *     <li>Borrowing CDs (7-day loan)</li>
+ *     <li>Detecting overdue CDs and applying fines (Strategy Pattern)</li>
+ *     <li>Calculating total CD fines for a specific user</li>
+ * </ul>
+ *
+ * This class interacts with {@link FileDatabase}, and applies
+ * {@link CDFineStrategy} for overdue fine calculation.
+ */
+
+
 public class CDService {
 
-    // ⭐ Helper: Convert JSON → CD object
+
+    /**
+     * Converts a JSONObject representing a CD into a CD model object.
+     *
+     * @param c JSONObject containing CD fields from the database
+     * @return CD object with correctly mapped fields
+     */
+
     private CD jsonToCD(JSONObject c) {
         CD cd = new CD(
                 c.getString("id"),
@@ -39,7 +62,19 @@ public class CDService {
         return cd;
     }
 
-    // ⭐ Add CD to database
+    /**
+     * Adds a new CD to the JSON database.
+     *
+     * Fields initialized:
+     * <ul>
+     *     <li>borrowed = false</li>
+     *     <li>dueDate = null</li>
+     *     <li>fine = 0</li>
+     * </ul>
+     *
+     * @param cd CD object to be stored
+     */
+
     public void addCD(CD cd) {
         JSONObject db = FileDatabase.load();
         JSONArray cds = db.getJSONArray("cds");
@@ -59,7 +94,12 @@ public class CDService {
         FileDatabase.save(db);
     }
 
-    // ⭐ Get all CDs
+    /**
+     * Retrieves all CDs stored in the database.
+     *
+     * @return list of CD objects
+     */
+
     public List<CD> getAllCDs() {
         JSONObject db = FileDatabase.load();
         JSONArray cds = db.getJSONArray("cds");
@@ -73,7 +113,28 @@ public class CDService {
         return results;
     }
 
-    // ⭐ Borrow CD (7 days)
+    /**
+     * Allows a user to borrow a CD for 7 days.
+     * Updates:
+     * <ul>
+     *     <li>quantity--</li>
+     *     <li>available = false (if quantity reaches 0)</li>
+     *     <li>borrowed = true</li>
+     *     <li>borrowedBy = user's ID</li>
+     *     <li>dueDate = today + 7 days</li>
+     * </ul>
+     *
+     * Prints messages for:
+     * <ul>
+     *     <li>CD not available</li>
+     *     <li>CD already borrowed</li>
+     *     <li>CD not found</li>
+     * </ul>
+     *
+     * @param id CD identifier
+     * @param currentUser user borrowing the CD
+     */
+
     public void borrowCD(String id, org.example.library.models.User currentUser) {
         JSONObject db = FileDatabase.load();
         JSONArray cds = db.getJSONArray("cds");
@@ -113,7 +174,22 @@ public class CDService {
         System.out.println("❌ CD not found.");
     }
 
-    // ⭐ Overdue detection for CDs
+    /**
+     * Checks all CDs to determine whether they are overdue.
+     * If overdue:
+     * <ul>
+     *     <li>Fine is calculated using {@link CDFineStrategy}</li>
+     *     <li>Fine is stored in database</li>
+     * </ul>
+     *
+     * Criteria:
+     * <ul>
+     *     <li>borrowed == true</li>
+     *     <li>dueDate exists</li>
+     *     <li>daysLate > 0</li>
+     * </ul>
+     */
+
     public void checkOverdueCDs() {
 
         JSONObject db = FileDatabase.load();
@@ -150,7 +226,13 @@ public class CDService {
     }
 
 
-    // ⭐ Total fine for THIS user’s CDs
+    /**
+     * Computes the total CD fines for a specific user.
+     *
+     * @param userId user ID to lookup
+     * @return total fine value in double
+     */
+
     public double getTotalCdFineForUser(int userId) {
         JSONObject db = FileDatabase.load();
         JSONArray cds = db.getJSONArray("cds");
